@@ -4,4 +4,3 @@ node_modules/
 data/*.json
 data/backups/
 .env*
-!.env.example
