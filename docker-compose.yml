@@ -1,0 +1,19 @@
+services:
+  portfolio:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET}
+      ALLOW_DEFAULT_ADMIN_PASSWORD: "false"
+      PORTFOLIO_DB_PATH: /app/data/portfolio-db.json
+      PORTFOLIO_BACKUP_RETENTION: ${PORTFOLIO_BACKUP_RETENTION:-30}
+      LOGIN_RATE_LIMIT_MAX: ${LOGIN_RATE_LIMIT_MAX:-5}
+      LOGIN_RATE_LIMIT_WINDOW_SECONDS: ${LOGIN_RATE_LIMIT_WINDOW_SECONDS:-900}
+    volumes:
+      - portfolio-data:/app/data
+
+volumes:
+  portfolio-data:

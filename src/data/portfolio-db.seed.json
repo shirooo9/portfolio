@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "profile": {
+    "name": "Example Owner",
+    "headline": "Software Engineer",
+    "bio": "Replace this example profile with your own content.",
+    "availability": "open_to_opportunities"
+  },
+  "experiences": [],
+  "education": [],
+  "projects": [],
+  "skills": []
+}

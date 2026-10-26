@@ -1,0 +1,6 @@
+import "server-only";
+import { NextResponse } from "next/server";
+import { createSession, sessionCookie, verifyPassword } from "@/lib/auth";
+import { sameOrigin } from "@/lib/request-security";
+import { checkLoginRateLimit, resetLoginRateLimit } from "@/lib/login-rate-limit";
+export async function POST(request: Request) { if (!sameOrigin(request)) return NextResponse.json({ error: "Origin not allowed" }, { status: 403 }); const key = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"; const limit = checkLoginRateLimit(key); if (!limit.allowed) return NextResponse.json({ error: "Too many login attempts" }, { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }); try { const body = await request.json() as { password?: unknown }; if (typeof body.password !== "string" || !verifyPassword(body.password)) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 }); resetLoginRateLimit(key); const response = NextResponse.json({ ok: true }); response.cookies.set(sessionCookie.name, createSession(), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: sessionCookie.maxAge, path: "/" }); return response; } catch { return NextResponse.json({ error: "Authentication is not configured" }, { status: 503 }); } }

@@ -1,0 +1,7 @@
+_references/
+node_modules/
+.next/
+data/*.json
+data/backups/
+.env*
+!.env.example
